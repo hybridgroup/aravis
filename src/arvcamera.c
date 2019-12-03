@@ -929,6 +929,8 @@ arv_camera_set_frame_rate (ArvCamera *camera, double frame_rate)
 			arv_device_set_float_feature_value (camera->priv->device, "AcquisitionFrameRate", frame_rate);
 			break;
 		case ARV_CAMERA_VENDOR_DALSA:
+			arv_device_set_integer_feature_value (camera->priv->device, "AcquisitionLineRate", frame_rate);
+			break;
 		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_XIMEA:
 		case ARV_CAMERA_VENDOR_MATRIX_VISION:
@@ -977,11 +979,12 @@ arv_camera_get_frame_rate (ArvCamera *camera)
 				return arv_device_get_float_feature_value (camera->priv->device, "FPS");
 		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
 		case ARV_CAMERA_VENDOR_DALSA:
+			return arv_device_get_integer_feature_value (camera->priv->device, "AcquisitionLineRate");
 		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_BASLER:
-	        case ARV_CAMERA_VENDOR_XIMEA:
+		case ARV_CAMERA_VENDOR_XIMEA:
 		case ARV_CAMERA_VENDOR_MATRIX_VISION:
-	        case ARV_CAMERA_VENDOR_UNKNOWN:
+		case ARV_CAMERA_VENDOR_UNKNOWN:
 			return arv_device_get_float_feature_value (camera->priv->device,
 								   camera->priv->has_acquisition_frame_rate ?
 								   "AcquisitionFrameRate":
@@ -1045,6 +1048,8 @@ arv_camera_get_frame_rate_bounds (ArvCamera *camera, double *min, double *max)
 			break;
 		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
 		case ARV_CAMERA_VENDOR_DALSA:
+			arv_device_get_integer_feature_bounds (camera->priv->device, "AcquisitionLineRate",
+									min, max);
 		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_BASLER:
 	        case ARV_CAMERA_VENDOR_XIMEA:
@@ -1572,9 +1577,10 @@ arv_camera_is_frame_rate_available (ArvCamera *camera)
 			return arv_device_get_feature (camera->priv->device, "FPS") != NULL;
 		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
 		case ARV_CAMERA_VENDOR_DALSA:
+			return arv_device_get_feature (camera->priv->device, "AcquisitionLineRate") != NULL;
 		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_BASLER:
-	        case ARV_CAMERA_VENDOR_XIMEA:
+		case ARV_CAMERA_VENDOR_XIMEA:
 		case ARV_CAMERA_VENDOR_MATRIX_VISION:
 		case ARV_CAMERA_VENDOR_UNKNOWN:
 			return arv_device_get_feature (camera->priv->device,
