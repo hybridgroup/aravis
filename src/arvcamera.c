@@ -934,7 +934,6 @@ arv_camera_set_frame_rate (ArvCamera *camera, double frame_rate)
 				arv_device_set_integer_feature_value (camera->priv->device, "AcquisitionLineRate", frame_rate);
 				break;
 			}
-			continue;
 		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_XIMEA:
 		case ARV_CAMERA_VENDOR_MATRIX_VISION:
@@ -981,15 +980,12 @@ arv_camera_get_frame_rate (ArvCamera *camera)
 					return 0;
 			} else
 				return arv_device_get_float_feature_value (camera->priv->device, "FPS");
-		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
-			continue;
 		case ARV_CAMERA_VENDOR_DALSA:
 			// TODO: also support standard cameras from Dalsa not just line scanners.
 			if (camera->priv->series == ARV_CAMERA_SERIES_DALSA) {
 				return arv_device_get_integer_feature_value (camera->priv->device, "AcquisitionLineRate");
-				break;
 			}
-			continue;
+		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
 		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_BASLER:
 		case ARV_CAMERA_VENDOR_XIMEA:
@@ -1056,8 +1052,6 @@ arv_camera_get_frame_rate_bounds (ArvCamera *camera, double *min, double *max)
 		case ARV_CAMERA_VENDOR_PROSILICA:
 			arv_device_get_float_feature_bounds (camera->priv->device, "AcquisitionFrameRateAbs", min, max);
 			break;
-		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
-			continue;
 		case ARV_CAMERA_VENDOR_DALSA:
 			// TODO: also support standard cameras from Dalsa not just line scanners.
 			if (camera->priv->series == ARV_CAMERA_SERIES_DALSA) {
@@ -1065,11 +1059,11 @@ arv_camera_get_frame_rate_bounds (ArvCamera *camera, double *min, double *max)
 									min, max);
 				break;
 			}
-			continue;
 
+		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
 		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_BASLER:
-	        case ARV_CAMERA_VENDOR_XIMEA:
+		case ARV_CAMERA_VENDOR_XIMEA:
 		case ARV_CAMERA_VENDOR_MATRIX_VISION:
 		case ARV_CAMERA_VENDOR_UNKNOWN:
 			arv_device_get_float_feature_bounds (camera->priv->device,
@@ -1592,15 +1586,13 @@ arv_camera_is_frame_rate_available (ArvCamera *camera)
 			return arv_device_get_feature (camera->priv->device, "AcquisitionFrameRateAbs") != NULL;
 		case ARV_CAMERA_VENDOR_TIS:
 			return arv_device_get_feature (camera->priv->device, "FPS") != NULL;
-		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
-			continue;
 		case ARV_CAMERA_VENDOR_DALSA:
 			// TODO: also support standard cameras from Dalsa not just line scanners.
 			if (camera->priv->series == ARV_CAMERA_SERIES_DALSA) {
 				return arv_device_get_feature (camera->priv->device, "AcquisitionLineRate") != NULL;
 			}
-			continue;
 
+		case ARV_CAMERA_VENDOR_POINT_GREY_FLIR:
 		case ARV_CAMERA_VENDOR_RICOH:
 		case ARV_CAMERA_VENDOR_BASLER:
 		case ARV_CAMERA_VENDOR_XIMEA:
